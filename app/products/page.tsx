@@ -5,6 +5,7 @@ import { productTableColumns } from "./_components/table-columns";
 import { getProducts } from "../_data-acess/product/get-product";
 
 const ProductsPage = async () => {
+   // fecth data based on the products
    const products = await getProducts();
 
    return (
