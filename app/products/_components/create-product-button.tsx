@@ -30,6 +30,7 @@ import { Loader2Icon, PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
+import { toast } from "sonner";
 
 const CreateProductButton = () => {
    const [dialogIsOpen, setDialogIsOpen] = useState(false);
@@ -47,9 +48,11 @@ const CreateProductButton = () => {
    const onSubmit = async (data: CreateProductSchemaType) => {
       try {
          await createProduct(data);
+         toast.success("Produto criado com sucesso!");
          setDialogIsOpen(false);
       } catch (error) {
          console.error(error);
+         toast.error("Ocorreu um erro ao criar o produto");
       }
    };
 
