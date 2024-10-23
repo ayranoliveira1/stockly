@@ -1,10 +1,10 @@
 "use client";
 
-import { createProduct } from "@/app/_actions/product/create-product";
+import { upsertProduct } from "@/app/_actions/product/upsert-product";
 import {
-   createProductSchema,
-   CreateProductSchemaType,
-} from "@/app/_actions/product/create-product/schema";
+   upsertProductSchema,
+   UpsertProductSchemaType,
+} from "@/app/_actions/product/upsert-product/schema";
 import { Button } from "@/app/_components/ui/button";
 import {
    DialogClose,
@@ -31,37 +31,41 @@ import { toast } from "sonner";
 
 interface UpsertProductDialogContentProps {
    onSuccess?: () => void;
+   defaultValues?: UpsertProductSchemaType;
 }
 
 const UpsertProductDialogContent = ({
+   defaultValues,
    onSuccess,
 }: UpsertProductDialogContentProps) => {
-   const form = useForm<CreateProductSchemaType>({
+   const form = useForm<UpsertProductSchemaType>({
       shouldUnregister: true,
-      resolver: zodResolver(createProductSchema),
-      defaultValues: {
+      resolver: zodResolver(upsertProductSchema),
+      defaultValues: defaultValues ?? {
          name: "",
          price: 0,
          stock: 1,
       },
    });
 
-   const onSubmit = async (data: CreateProductSchemaType) => {
+   const onSubmit = async (data: UpsertProductSchemaType) => {
       try {
-         await createProduct(data);
+         await upsertProduct({ ...data, id: defaultValues?.id });
          onSuccess?.();
-         toast.success("Produto criado com sucesso!");
       } catch (error) {
          console.error(error);
-         toast.error("Ocorreu um erro ao criar o produto");
       }
    };
+
+   const isEditing = !!defaultValues;
 
    return (
       <DialogContent>
          <Form {...form}>
             <DialogHeader>
-               <DialogTitle>Criar produto</DialogTitle>
+               <DialogTitle>
+                  {isEditing ? "Editar" : "Criar"} produto
+               </DialogTitle>
                <DialogDescription>
                   Insira as informações abaixo
                </DialogDescription>
