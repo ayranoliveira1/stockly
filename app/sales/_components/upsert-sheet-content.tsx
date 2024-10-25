@@ -84,6 +84,18 @@ const SalesUpsertSheetContent = ({
          );
 
          if (existingProduct) {
+            const productIsOutOfStock =
+               existingProduct.quantity + data.quantity > selectedProduct.stock;
+
+            if (productIsOutOfStock) {
+               form.setError("quantity", {
+                  message: "Quantidade indisponível em estoque.",
+               });
+
+               return currencyProducts;
+            }
+            form.reset();
+
             return currencyProducts.map((product) => {
                if (product.id === selectedProduct.id) {
                   return {
@@ -96,6 +108,17 @@ const SalesUpsertSheetContent = ({
             });
          }
 
+         const productIsOutOfStock = data.quantity > selectedProduct.stock;
+
+         if (productIsOutOfStock) {
+            form.setError("quantity", {
+               message: "Quantidade indisponível em estoque.",
+            });
+
+            return currencyProducts;
+         }
+         form.reset();
+
          return [
             ...currencyProducts,
             {
@@ -105,8 +128,6 @@ const SalesUpsertSheetContent = ({
             },
          ];
       });
-
-      form.reset();
    };
 
    const productsTotal = useMemo(() => {
