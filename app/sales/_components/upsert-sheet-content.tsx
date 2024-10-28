@@ -31,13 +31,14 @@ import {
 import { formatCurrency } from "@/app/_helpers/currency";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Product } from "@prisma/client";
-import { CheckIcon, MoreHorizontalIcon, PlusIcon } from "lucide-react";
+import { CheckIcon, PlusIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import SalesTableDropdownMenu from "./table-dropdown-menu";
+import SalesTableDropdownMenu from "./upsert-table-dropdown-menu";
 import { createSale } from "@/app/_actions/sales/create-sales";
 import { toast } from "sonner";
+import UpsertSaleTableDropdownMenu from "./upsert-table-dropdown-menu";
 
 const formSchema = z.object({
    productId: z.string().uuid({ message: "Produto é obrigatorio" }),
@@ -248,7 +249,7 @@ const SalesUpsertSheetContent = ({
                         {formatCurrency(product.price * product.quantity)}
                      </TableCell>
                      <TableCell>
-                        <SalesTableDropdownMenu
+                        <UpsertSaleTableDropdownMenu
                            onDelete={onDelete}
                            product={product}
                         />
