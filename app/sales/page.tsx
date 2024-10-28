@@ -25,7 +25,7 @@ const SalesPage = async () => {
             </div>
 
             <CreateSaleButtun
-               products={products}
+               products={JSON.parse(JSON.stringify(products))}
                productsOptions={productsOptions}
             />
          </div>
