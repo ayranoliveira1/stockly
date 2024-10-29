@@ -6,12 +6,18 @@ import CreateSaleButtun from "./_components/create-sale-button";
 import { saleTableColumns } from "./_components/table-columns";
 
 const SalesPage = async () => {
-   const products = await getProducts();
    const sales = await getSales();
+   const products = await getProducts();
 
    const productsOptions: ComboboxOption[] = products.map((product) => ({
       label: product.name,
       value: product.id,
+   }));
+
+   const tableData = sales.map((sale) => ({
+      ...sale,
+      products,
+      productsOptions,
    }));
 
    return (
@@ -30,7 +36,7 @@ const SalesPage = async () => {
             />
          </div>
 
-         <DataTable columns={saleTableColumns} data={sales} />
+         <DataTable columns={saleTableColumns} data={tableData} />
       </div>
    );
 };

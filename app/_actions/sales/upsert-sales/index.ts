@@ -7,7 +7,43 @@ import { revalidatePath } from "next/cache";
 export const upsertSale = async (data: UpsertSaleSchema) => {
    upsertSaleSchema.parse(data);
 
+   const isUpdate = Boolean(data.id);
+
    await db.$transaction(async (trx) => {
+      if (isUpdate) {
+         const isExistingsale = await trx.sale.findUnique({
+            where: {
+               id: data.id,
+            },
+            include: {
+               salesProducts: true,
+            },
+         });
+
+         if (!isExistingsale) {
+            throw new Error("sale not found");
+         }
+
+         await trx.sale.delete({
+            where: {
+               id: data.id,
+            },
+         });
+
+         for (const product of isExistingsale.salesProducts) {
+            await trx.product.update({
+               where: {
+                  id: product.id,
+               },
+               data: {
+                  stock: {
+                     increment: product.quantity,
+                  },
+               },
+            });
+         }
+      }
+
       const sale = await trx.sale.create({
          data: {
             date: new Date(),
@@ -15,7 +51,7 @@ export const upsertSale = async (data: UpsertSaleSchema) => {
       });
 
       for (const product of data.products) {
-         const productFromDb = await db.product.findUnique({
+         const productFromDb = await trx.product.findUnique({
             where: {
                id: product.id,
             },
@@ -54,4 +90,5 @@ export const upsertSale = async (data: UpsertSaleSchema) => {
    });
 
    revalidatePath("/products");
+   revalidatePath("/sales");
 };

@@ -30,15 +30,14 @@ import {
 } from "@/app/_components/ui/table";
 import { formatCurrency } from "@/app/_helpers/currency";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Product } from "@prisma/client";
 import { CheckIcon, PlusIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import SalesTableDropdownMenu from "./upsert-table-dropdown-menu";
-import { createSale } from "@/app/_actions/sales/create-sales";
+import { upsertSale } from "@/app/_actions/sales/upsert-sales";
 import { toast } from "sonner";
 import UpsertSaleTableDropdownMenu from "./upsert-table-dropdown-menu";
+import { ProductDto } from "@/app/_data-acess/product/get-product";
 
 const formSchema = z.object({
    productId: z.string().uuid({ message: "Produto é obrigatorio" }),
@@ -47,12 +46,6 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-interface SalesUpsertSheetContentProps {
-   products: Product[];
-   productsOptions: ComboboxOption[];
-   setSheetIsOpen: () => void;
-}
-
 interface SelectedProduct {
    id: string;
    name: string;
@@ -60,13 +53,23 @@ interface SelectedProduct {
    quantity: number;
 }
 
+interface SalesUpsertSheetContentProps {
+   saleId?: string;
+   products: ProductDto[];
+   productsOptions: ComboboxOption[];
+   setSheetIsOpen: () => void;
+   defaultSelectedProduct?: SelectedProduct[];
+}
+
 const SalesUpsertSheetContent = ({
+   saleId,
    productsOptions,
    products,
    setSheetIsOpen,
+   defaultSelectedProduct,
 }: SalesUpsertSheetContentProps) => {
    const [selectedProduct, setSelectedProduct] = useState<SelectedProduct[]>(
-      [],
+      defaultSelectedProduct ?? [],
    );
 
    const form = useForm<FormSchema>({
@@ -150,7 +153,8 @@ const SalesUpsertSheetContent = ({
 
    const onSubmitSale = async () => {
       try {
-         await createSale({
+         await upsertSale({
+            id: saleId,
             products: selectedProduct.map((product) => {
                return {
                   id: product.id,
