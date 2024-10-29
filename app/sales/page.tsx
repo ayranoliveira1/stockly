@@ -1,3 +1,9 @@
+import Header, {
+   HeaderLeft,
+   HeaderRight,
+   HeaderSubTitle,
+   HeaderTitle,
+} from "../_components/header";
 import { ComboboxOption } from "../_components/ui/combobox";
 import { DataTable } from "../_components/ui/data-table";
 import { getProducts } from "../_data-acess/product/get-product";
@@ -22,19 +28,19 @@ const SalesPage = async () => {
 
    return (
       <div className="w-full space-y-8 p-8">
-         <div className="flex w-full items-center justify-between">
-            <div className="space-y-1">
-               <span className="text-xs font-semibold text-slate-500">
-                  Vendas
-               </span>
-               <h2 className="text-xl font-semibold">Gestão de vendas</h2>
-            </div>
+         <Header>
+            <HeaderLeft>
+               <HeaderSubTitle>Vendas</HeaderSubTitle>
+               <HeaderTitle>Gestão de vendas</HeaderTitle>
+            </HeaderLeft>
 
-            <CreateSaleButtun
-               products={JSON.parse(JSON.stringify(products))}
-               productsOptions={productsOptions}
-            />
-         </div>
+            <HeaderRight>
+               <CreateSaleButtun
+                  products={JSON.parse(JSON.stringify(products))}
+                  productsOptions={productsOptions}
+               />
+            </HeaderRight>
+         </Header>
 
          <DataTable
             columns={saleTableColumns}
