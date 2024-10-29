@@ -52,8 +52,9 @@ const UpsertProductDialogContent = ({
       try {
          await upsertProduct({ ...data, id: defaultValues?.id });
          onSuccess?.();
+         toast.success("Produto salvo com sucesso!");
       } catch (error) {
-         console.error(error);
+         toast.error("Erro ao salvar o produto!");
       }
    };
 
