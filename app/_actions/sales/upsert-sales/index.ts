@@ -1,11 +1,11 @@
 "use server";
 
 import { db } from "@/app/_lib/prisma";
-import { createSaleSchema, CreateSaleSchema } from "./schema";
+import { upsertSaleSchema, UpsertSaleSchema } from "./schema";
 import { revalidatePath } from "next/cache";
 
-export const createSale = async (data: CreateSaleSchema) => {
-   createSaleSchema.parse(data);
+export const upsertSale = async (data: UpsertSaleSchema) => {
+   upsertSaleSchema.parse(data);
 
    await db.$transaction(async (trx) => {
       const sale = await trx.sale.create({
