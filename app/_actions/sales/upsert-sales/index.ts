@@ -20,9 +20,7 @@ export const upsertSale = async (data: UpsertSaleSchema) => {
             },
          });
 
-         if (!isExistingsale) {
-            throw new Error("sale not found");
-         }
+         if (!isExistingsale) return;
 
          await trx.sale.delete({
             where: {
@@ -33,7 +31,7 @@ export const upsertSale = async (data: UpsertSaleSchema) => {
          for (const product of isExistingsale.salesProducts) {
             await trx.product.update({
                where: {
-                  id: product.id,
+                  id: product.productId,
                },
                data: {
                   stock: {

@@ -36,7 +36,10 @@ const SalesPage = async () => {
             />
          </div>
 
-         <DataTable columns={saleTableColumns} data={tableData} />
+         <DataTable
+            columns={saleTableColumns}
+            data={JSON.parse(JSON.stringify(tableData))}
+         />
       </div>
    );
 };
