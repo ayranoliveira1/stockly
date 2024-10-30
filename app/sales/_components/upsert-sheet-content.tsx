@@ -164,6 +164,7 @@ const SalesUpsertSheetContent = ({
          });
          toast.success("Venda criada com sucesso!");
          setSheetIsOpen();
+         setSelectedProduct([]);
       } catch (error) {
          toast.error("Erro ao criar a venda.");
       }
