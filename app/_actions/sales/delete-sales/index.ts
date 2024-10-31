@@ -14,4 +14,6 @@ export const deleteSale = async ({ id }: DeleteSaleType) => {
    });
 
    revalidatePath("/sales");
+   revalidatePath("/products");
+   revalidatePath("/");
 };
