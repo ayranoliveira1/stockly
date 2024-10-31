@@ -1,4 +1,5 @@
 import { db } from "@/app/_lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
    const products = await db.product.findMany({});
@@ -15,6 +16,8 @@ export async function POST(request: Request) {
          stock,
       },
    });
+
+   revalidatePath("/products");
 
    return Response.json({ message: "Product created" }, { status: 201 });
 }
