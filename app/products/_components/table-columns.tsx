@@ -5,6 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { CircleIcon } from "lucide-react";
 import ProductTableDropdownMenu from "./table-dropdown-menu";
 import { ProductDto } from "@/app/_data-acess/product/get-product";
+import ProductStatusBadge from "@/app/_components/product-status-badge";
 
 const getStatusLabel = (status: string) => {
    if (status === "IN STOCK") {
@@ -38,19 +39,8 @@ export const productTableColumns: ColumnDef<ProductDto>[] = [
    {
       accessorKey: "status",
       header: "Status",
-      cell: (row) => {
-         const product = row.row.original;
-         const label = getStatusLabel(product.status);
-
-         return (
-            <Badge
-               variant={label === "Em estoque" ? "default" : "destructive"}
-               className="gap-2"
-            >
-               <CircleIcon size={12} className="fill-white" />
-               {label}
-            </Badge>
-         );
+      cell: ({ row: { original: product } }) => {
+         return <ProductStatusBadge status={product.status} />;
       },
    },
    {
