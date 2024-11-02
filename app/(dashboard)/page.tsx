@@ -18,10 +18,12 @@ import { getDashboard } from "../_data-acess/dashboard/get-dashboard";
 import { formatCurrency } from "../_helpers/currency";
 import RevenueChart from "./_components/revenue-chart";
 import MostSoldProductItem from "./_components/most-sold-product-item";
+import TotalRevenueCard from "./_components/total-revenue-card";
+import { Suspense } from "react";
+import { Skeleton } from "../_components/ui/skeleton";
 
 const Home = async () => {
    const {
-      totalRevenue,
       todayRevenue,
       totalSales,
       totalStock,
@@ -40,15 +42,11 @@ const Home = async () => {
          </Header>
 
          <div className="grid grid-cols-2 gap-6">
-            <SummaryCard>
-               <SummaryCardIcon>
-                  <DollarSign />
-               </SummaryCardIcon>
-               <SummaryCardTitle>Receita total</SummaryCardTitle>
-               <SummaryCardValue>
-                  {formatCurrency(totalRevenue)}
-               </SummaryCardValue>
-            </SummaryCard>
+            <Suspense
+               fallback={<Skeleton className="bg-white bg-opacity-75" />}
+            >
+               <TotalRevenueCard />
+            </Suspense>
 
             <SummaryCard>
                <SummaryCardIcon>
@@ -102,7 +100,7 @@ const Home = async () => {
                   Produtos mais vendidos
                </p>
 
-               <div className="mt-2 space-y-7 overflow-y-auto px-6 pb-6">
+               <div className="mt-2 space-y-7 overflow-y-auto px-6 pb-6 [&::-webkit-scrollbar]:hidden">
                   {mostSoldProducts.map((product) => (
                      <MostSoldProductItem
                         key={product.productId}
