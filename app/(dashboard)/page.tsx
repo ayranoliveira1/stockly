@@ -21,10 +21,10 @@ import MostSoldProductItem from "./_components/most-sold-product-item";
 import TotalRevenueCard from "./_components/total-revenue-card";
 import { Suspense } from "react";
 import { Skeleton } from "../_components/ui/skeleton";
+import TodayRevenueCard from "./_components/today-revenue-card";
 
 const Home = async () => {
    const {
-      todayRevenue,
       totalSales,
       totalStock,
       totalProducts,
@@ -48,15 +48,11 @@ const Home = async () => {
                <TotalRevenueCard />
             </Suspense>
 
-            <SummaryCard>
-               <SummaryCardIcon>
-                  <DollarSign />
-               </SummaryCardIcon>
-               <SummaryCardTitle>Receita hoje</SummaryCardTitle>
-               <SummaryCardValue>
-                  {formatCurrency(todayRevenue)}
-               </SummaryCardValue>
-            </SummaryCard>
+            <Suspense
+               fallback={<Skeleton className="bg-white bg-opacity-75" />}
+            >
+               <TodayRevenueCard />
+            </Suspense>
          </div>
 
          <div className="grid grid-cols-3 gap-6">
