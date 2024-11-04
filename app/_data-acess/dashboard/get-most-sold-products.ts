@@ -1,3 +1,5 @@
+import "server-only";
+
 import { db } from "@/app/_lib/prisma";
 import { ProductStatusDto } from "../product/get-product";
 
