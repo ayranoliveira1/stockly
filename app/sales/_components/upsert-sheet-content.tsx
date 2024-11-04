@@ -167,6 +167,7 @@ const SalesUpsertSheetContent = ({
          setSelectedProduct([]);
       } catch (error) {
          toast.error("Erro ao criar a venda.");
+         setSelectedProduct([]);
       }
    };
 
