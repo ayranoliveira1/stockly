@@ -27,7 +27,7 @@ const SalesPage = async () => {
    }));
 
    return (
-      <div className="w-full space-y-8 p-8">
+      <div className="w-full space-y-8 overflow-y-auto p-8">
          <Header>
             <HeaderLeft>
                <HeaderSubTitle>Vendas</HeaderSubTitle>
