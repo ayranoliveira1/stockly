@@ -21,14 +21,11 @@ import { Suspense } from "react";
 import { Skeleton } from "../_components/ui/skeleton";
 import TodayRevenueCard from "./_components/today-revenue-card";
 import TotalSalesCard from "./_components/total-sales-card";
+import TotalStockCard from "./_components/total-stock-card";
 
 const Home = async () => {
-   const {
-      totalStock,
-      totalProducts,
-      totalLast14DaysRevenue,
-      mostSoldProducts,
-   } = await getDashboard();
+   const { totalProducts, totalLast14DaysRevenue, mostSoldProducts } =
+      await getDashboard();
 
    return (
       <div className="flex w-full flex-col space-y-8 p-8">
@@ -60,13 +57,11 @@ const Home = async () => {
                <TotalSalesCard />
             </Suspense>
 
-            <SummaryCard>
-               <SummaryCardIcon>
-                  <PackageIcon />
-               </SummaryCardIcon>
-               <SummaryCardTitle>Total em estoque</SummaryCardTitle>
-               <SummaryCardValue>{totalStock}</SummaryCardValue>
-            </SummaryCard>
+            <Suspense
+               fallback={<Skeleton className="bg-white bg-opacity-75" />}
+            >
+               <TotalStockCard />
+            </Suspense>
 
             <SummaryCard>
                <SummaryCardIcon>
